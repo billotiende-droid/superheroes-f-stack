@@ -28,7 +28,7 @@ class HeroPower(db.Model, SerializerMixin):
 
     serialize_rules = (
         "-hero.hero_powers",
-        "-power.hero_powers",
+        "-power.hero_powers"
     )
 
     # Validations
@@ -54,13 +54,9 @@ class Hero(db.Model, SerializerMixin):
     # Relationships
     hero_powers = db.relationship ('HeroPower', back_populates='hero', cascade='all, delete-orphan')
 
-    #Access powers directly via Assosciation
-    powers = db.relationship ('Power', secondary='hero_powers', back_populates='heroes', viewonly=True)
-
     #Serialization rules to avoid recursion
     serialize_rules = (
         "-hero_powers.hero",
-        "-powers.hero_powers",
     )
     
 
@@ -74,11 +70,10 @@ class Power(db.Model, SerializerMixin):
 
     hero_powers = db.relationship('HeroPower', back_populates='power', cascade='all, delete-orphan')
 
-    heroes = db.relationship('Hero', secondary='hero_powers', back_populates='powers', viewonly=True)
+    
 
     serialize_rules = (
         '-hero_powers.power',
-        '-heroes.hero_powers',
     )
 
     @validates('description')
